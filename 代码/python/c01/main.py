@@ -93,6 +93,8 @@ def init_flask():
     @app.route('/transactions/new', methods=['POST'])
     def new_transaction():
         values = request.get_json()
+        if values == None:  # 判断是否有值
+            return 'Missing values', 400
         required = ['sender', 'recipient', 'amount']
         if not all(k in values for k in required):  # 判断是否有缺失的值
             return 'Missing values', 400
