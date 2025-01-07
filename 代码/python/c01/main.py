@@ -2,6 +2,8 @@
 import hashlib
 import json
 from time import time
+from urllib.parse import urlparse
+
 from flask import Flask, jsonify, request
 
 
@@ -10,7 +12,14 @@ class BolckChain:
     def __init__(self):
         self.chain = []  # 这个用于存储区块链 随着区块链的不断增长，数据量会越来越大，导致数据传输和存储的负担加重
         self.current_transactions = []  # 这个用于存储当前交易信息
+        self.nodes = set()  # 这个用于存储网络中的节点信息 SET能保证不重复
+
         self.new_block(proof=100, previous_hash=1)  # 创建创世区块
+
+    # 注册一个节点
+    def register_node(self, address):
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
 
     # 创建一个区块
     def new_block(self, proof, previous_hash=None):
@@ -110,6 +119,21 @@ def init_flask():
             'length': len(blockchain.chain)
         }
         return jsonify(response), 200
+
+    # 注册节点
+    @app.route('/nodes/register', methods=['POST'])
+    def register_nodes():
+        values = request.get_json()
+        nodes = values.get('nodes')
+        if nodes is None:
+            return "Error: Please supply a valid list of nodes", 400
+        for node in nodes:
+            blockchain.register_node(node)
+        response = {
+            'message': 'New nodes have been added',
+            'total_nodes': list(blockchain.nodes)
+        }
+        return jsonify(response), 201
 
     app.run(host='0.0.0.0', port=5000)
 
