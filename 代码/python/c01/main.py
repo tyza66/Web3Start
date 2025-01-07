@@ -18,7 +18,7 @@ class BolckChain:
             'timestamp': time(),
             'transactions': self.current_transactions,
             'proof': proof,
-            'previous_hash': previous_hash or self.hash(self.chain[-1])
+            'previous_hash': previous_hash or self.hash(self.last_block)
             # -1表示最后一个区块 就是数组中最后一个元素 or表示如果传入了previous_hash就用传入的，否则用最后一个区块的哈希值
         }
         self.current_transactions = []  # 将交易信息清空 因为已经打包到区块中了
@@ -36,11 +36,12 @@ class BolckChain:
 
     @staticmethod
     def hash(block):
-        hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest() # 将区块转换为json字符串，然后转换为字节，然后进行sha256加密
+        # 将区块转换为json字符串，然后转换为字节，然后进行sha256加密 最后返回加密后的哈希值
+        return hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
-    @property
+    @property # 将函数定义为属性
     def last_block(self):
-        pass
+        return self.chain[-1]  # 返回最后一个区块
 
 
 def print_hi(name):
