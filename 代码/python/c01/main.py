@@ -43,6 +43,18 @@ class BolckChain:
     def last_block(self):
         return self.chain[-1]  # 返回最后一个区块
 
+    # 模拟工作量证明
+    def proof_of_work(self, last_proof):
+        proof = 0
+        while self.valid_proof(last_proof, proof) is False: # 最后一个节点的工作量证明和当前的工作量证明进行加密，然后判断加密后的哈希值是否满足条件
+            proof += 1
+        return proof
+
+    # 用上一个区块的工作量证明和当前的工作量证明进行加密，然后判断加密后的哈希值是否满足条件
+    def valid_proof(self, last_proof, proof):
+        guess = f'{last_proof}{proof}'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == "0000"
 
 def print_hi(name):
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
