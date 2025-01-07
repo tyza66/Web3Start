@@ -72,13 +72,13 @@ def init_flask():
     def mine():
         last_block = blockchain.last_block
         last_proof = last_block['proof']    # 获取最后一个区块的工作量证明模拟用
-        proof = blockchain.proof_of_work(last_proof) # 模拟计算当前节点工作量证明
-        blockchain.new_transaction(
-            sender="0",
-            recipient=node_identifier,
-            amount=1
+        proof = blockchain.proof_of_work(last_proof) # 模拟计算当前节点工作量证明(浪费自然资源)
+        blockchain.new_transaction(     # 给自己的奖励交易
+            sender="0", #奖励不需要发送者 相当于新发行的货币
+            recipient=node_identifier, # 接收者是自己
+            amount=1    # 奖励金额
         )
-        block = blockchain.new_block(proof)
+        block = blockchain.new_block(proof) # 给最新的交易同步进区块链 之后返回当前添加的区块信息
         response = {
             'message': "New Block Forged",
             'index': block['index'],
