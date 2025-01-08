@@ -14,7 +14,18 @@ contract TestSelf {
     uint _now = block.timestamp; // 当前区块的时间戳 同上 就算 上面那个的别名
     uint gasprice = tx.gasprice; // 当前交易的gas价格
 
-    function testApi() public view{
-        
+    function testApi() public view returns(address){
+        return  msg.sender;
+    }
+
+    constructor() payable{
+        // 这里的msg.value是构造函数的参数
+        // 这里的payable修饰符是为了接受以太币
+    }
+
+    // 如果函数有payable修饰符 那么这个函数可以接受以太币
+    // 下面这种操作还要求构造函数有payable修饰符
+    function testApi2() public payable returns(uint){
+        return  msg.value;
     }
 }
