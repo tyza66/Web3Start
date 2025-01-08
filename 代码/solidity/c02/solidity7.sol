@@ -13,4 +13,8 @@ contract TestSelf {
     uint timestamp = block.timestamp; // 当前区块的时间戳 就是从1970年1月1日到现在的秒数
     uint _now = block.timestamp; // 当前区块的时间戳 同上 就算 上面那个的别名
     uint gasprice = tx.gasprice; // 当前交易的gas价格
+
+    function testApi() public view{
+        
+    }
 }
