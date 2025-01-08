@@ -1,6 +1,7 @@
 # 区块包括：索引、时间戳、交易信息（数组）、工作量证明、上一个区块的哈希值
 import hashlib
 import json
+from argparse import ArgumentParser
 from time import time
 from urllib.parse import urlparse
 
@@ -106,7 +107,7 @@ class BolckChain:
         return False
 
 
-def init_flask():
+def init_flask(port):
     app = Flask(__name__)
     blockchain = BolckChain()
     node_identifier = '123'
@@ -190,8 +191,12 @@ def init_flask():
             }
         return jsonify(response), 200
 
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':
-    init_flask()
+    parser = ArgumentParser()
+    parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on') # --什么一会就用.取出什么
+    args = parser.parse_args()
+    port = args.port # 获取端口 这里的port是在命令行中输入的端口值
+    init_flask(port)
