@@ -37,6 +37,22 @@ contract Test{
             return a * b;
         }
     }
+    // 除以0或者进行负数移位的话会报错
+
+    // 常量 又叫字面量 literals
+    // 有四类常量：有理数和整数常量、字符串常量、十六进制常量、地址常量
+    function testLiterals() public view returns(uint){
+        // 直接写出来值就是常量（字面量）
+        return 1 + 1.5e11; // 常量支持科学计数法 就是1.5*10^11
+        // 常量是支持任意精度的
+    }
+    // memory是临时存储空间 用来存储函数的参数和局部变量
+    // storage是永久存储空间 用来存储合约的状态变量
+    // calldata是用来存储外部函数调用的参数
+    function testStringLiterals() public view returns(string memory) {
+        return "apple";     // 字符串常量隐性转换为字节数组
+    }
+
 }
 
 // 直接去remix单元测试、或者run里面运行就行了 之后去已部署的合约里面 之后看解码输出
