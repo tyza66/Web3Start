@@ -33,6 +33,17 @@ contract ArrarTest{
     function newM(uint len) public view returns(uint){
         uint[] memory a = new uint[](len); // 填多少就开辟多大 下标还是从0开始
         // 这个length是不会被赋值的方法更改的 但是状态变量u就可以
+
+        // 我们给的长度一定要够 不能给超出数组长度的位置的值
+        bytes memory b = new bytes(len);
+        a[6] = 8;
+
+        g([uint(1),2,3]);
         return a.length;
+    }
+
+    // 数组作为参数 接收三个元素的数组 传参不能传错
+    function g(uint[3] memory _data) public view returns(uint){
+        return _data.length;
     }
 }
