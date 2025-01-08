@@ -31,7 +31,7 @@ contract ArrarTest{
 
     // 动态创建一个memory数组
     function newM(uint len) public view returns(uint){
-        uint[] memory a = new uint[](len);
+        uint[] memory a = new uint[](len); // 填多少就开辟多大 下标还是从0开始
         // 这个length是不会被赋值的方法更改的 但是状态变量u就可以
         return a.length;
     }
