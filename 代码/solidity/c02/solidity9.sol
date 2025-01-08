@@ -46,6 +46,11 @@ contract Test {
     // 我们可以用var关键字来接收多个返回值
     function testThreeReturn() public pure returns (uint sum,string memory name,uint flag){
         (sum,name,flag) = threeReturn();
+        uint y;
+        uint z;
+        (y,,z) = threeReturn(); // 我们可以用逗号来忽略某个返回值或者忽略元组中的返回值
+        uint x;
+        (x,) = (3,4);
         (sum,flag) = (flag,sum); //我们还可以利用解构来交换两个变量的值
         return (sum,name,flag);
     }
