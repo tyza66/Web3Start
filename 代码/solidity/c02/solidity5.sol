@@ -20,8 +20,9 @@ contract ArrarTest{
     uint[] public u = [1,2,3,4,5]; // 变长度数组 放入IDE中后会自动生成访问器 下标也是从0开始
     string s = "abcdefg";
 
-    function h() public view returns(uint){
-        return bytes(s).length;
+    function h() public returns(uint){
+        u.push(4);
+        return u.length;
     }
 
     function f() public view returns(bytes1){
