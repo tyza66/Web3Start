@@ -18,5 +18,21 @@ contract ArrarTest{
     // string可以转为bytes，bytes类似于byte[]，但是长度是固定的
     // 数组常见的属性和方法有length、push、pop、slice、splice、concat、reverse、sort
     uint[] public u = [1,2,3,4,5]; // 变长度数组 放入IDE中后会自动生成访问器 下标也是从0开始
+    string s = "abcdefg";
 
+    function h() public view returns(uint){
+        return bytes(s).length;
+    }
+
+    function f() public view returns(bytes1){
+        return  bytes(s)[1];
+        // 字母 b 的 ASCII 码是 98。将其转换为十六进制表示形式就是 0x62
+    }
+
+    // 动态创建一个memory数组
+    function newM(uint len) public view returns(uint){
+        uint[] memory a = new uint[](len);
+        // 这个length是不会被赋值的方法更改的 但是状态变量u就可以
+        return a.length;
+    }
 }
