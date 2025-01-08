@@ -100,7 +100,7 @@ class BolckChain:
                 if length > max_length and self.valid_chain(chain):  # 如果长度大于当前的区块链长度并且区块链是有效的
                     max_length = length
                     new_chain = chain
-        if new_chain:
+        if new_chain: # 如果有新的区块链取代了我们的链条 返回真
             self.chain = new_chain
             return True
         return False
@@ -173,6 +173,22 @@ def init_flask():
             'total_nodes': list(blockchain.nodes)
         }
         return jsonify(response), 201
+
+    # 解决冲突
+    @app.route('/nodes/resolve', methods=['GET'])
+    def consensus():
+        replaced = blockchain.resolve_conflicts()
+        if replaced:
+            response = {
+                'message': 'Our chain was replaced',
+                'new_chain': blockchain.chain
+            }
+        else:
+            response = {
+                'message': 'Our chain is authoritative',
+                'chain': blockchain.chain
+            }
+        return jsonify(response), 200
 
     app.run(host='0.0.0.0', port=5000)
 
