@@ -29,7 +29,7 @@ class BolckChain:
             'timestamp': time(),
             'transactions': self.current_transactions,
             'proof': proof,
-            'previous_hash': previous_hash or self.hash(self.last_block)
+            'previous_hash': previous_hash or self.hash(self.last_block)  # 记录原本最后一个块的哈希值
             # -1表示最后一个区块 就是数组中最后一个元素 or表示如果传入了previous_hash就用传入的，否则用最后一个区块的哈希值
         }
         self.current_transactions = []  # 将交易信息清空 因为已经打包到区块中了
@@ -62,6 +62,7 @@ class BolckChain:
         return proof
 
     # 用上一个区块的工作量证明和当前的工作量证明进行加密，然后判断加密后的哈希值是否满足条件
+    # 真实的应该是上一个区块的哈希值、当前区块的哈希值、一个随机数一起哈希验证
     # 现在比特币应该是以18个0开头
     def valid_proof(self, last_proof, proof):
         guess = f'{last_proof}{proof}'.encode()
@@ -69,24 +70,28 @@ class BolckChain:
         return guess_hash[:4] == "0000"
 
     # 验证区块链是否有效
+    # 判定的条件就是当前区块存的哈希值是否等于上一个区块的哈希值
+    # 每十分钟只会有一个矿工挖到矿 所以一般只多一个区块
+    # 现在区块中的交易多了没有事，如果新区块中没有包含某些交易，这些交易会继续保留在其他节点的交易池中，等待下一个矿工将其打包到区块中。这些交易不会丢失，只是需要更多时间才能被确认
+    # 以下代码未实现此功能
     def valid_chain(self, chain):
-        last_block = chain[0]
-        current_index = 1
+        last_block = chain[0]  # 获取第一个区块
+        current_index = 1  # 当前索引
         while current_index < len(chain):
-            block = chain[current_index]
-            if block['previous_hash'] != self.hash(last_block):  # 判断当前区块的哈希值是否等于上一个区块的哈希值
+            block = chain[current_index]  # 获取要检查的区块链中的当前索引区块 这个第一次应该是创世区块的下一个区块
+            if block['previous_hash'] != self.hash(last_block):  # 判断要检查的区块的当前索引下标区块中所存的上一个区块的哈希值是否等于本地相对位置的上一个区块的哈希值
                 return False
-            if not self.valid_proof(last_block['proof'], block['proof']):  # 判断工作量证明是否有效
+            if not self.valid_proof(last_block['proof'], block['proof']):  # 模拟判断工作量证明是否有效
                 return False
-            last_block = block
-            current_index += 1
-        return True
+            last_block = block  # 如果上面的条件判断都过了，说明有效，将当前检查完的区块当作下一个要检查的区块的上一个区块
+            current_index += 1  # 索引加一
+        return True # 如果所有的区块都检查完了，说明区块链是有效的
 
     # 解决冲突
     def resolve_conflicts(self):
         neighbours = self.nodes  # 获取所有的节点 目的是找到最长的区块链
-        new_chain = None
-        max_length = len(self.chain)
+        new_chain = None  # 用于暂存当前最长的链
+        max_length = len(self.chain)  # 当前节点的区块链长度
         for node in neighbours:
             response = requests.get(f'http://{node}/chain')
             if response.status_code == 200:
