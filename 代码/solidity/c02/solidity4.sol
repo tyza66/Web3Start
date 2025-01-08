@@ -6,7 +6,13 @@ contract AddrTest{
 
     }
     
+    // 返回余额
     function getBlance() public view returns(uint){
         return address(this).balance; // this指的是当前合约
+    }
+    
+    // 转账
+    function transferEther(address payable towho) public {
+        towho.transfer(10);
     }
 }

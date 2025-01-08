@@ -31,7 +31,7 @@
 #### 三、实战部分
 
 1. C01：用Python实现区块链（简易雏形）
-2. C02：Solidity浅入门（https://remix.ethereum.org/ ）
+2. C02：Solidity浅入门（ https://remix.ethereum.org/ ）
 3. C03：去中心化应用开发与运行
 
 By：tyza66
