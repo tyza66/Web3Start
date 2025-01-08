@@ -66,6 +66,7 @@ contract Test{
     // 地址类型是一个20字节的值
     // 地址可以是外部账户地址 也可以是合约地址
     // 地址的属性和函数有balance、transfer、send、call、callcode、delegatecall
+    // 见程序4
 }
 
 // 直接去remix单元测试、或者run里面运行就行了 之后去已部署的合约里面 之后看解码输出
