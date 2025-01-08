@@ -9,11 +9,11 @@ contract Test{
     bool flag = true;
     bool flag2 = false;
 
-    function testBool() public returns(bool){
-        return flag && flag2;
+    function testBool() public view returns(bool){
+        return !(flag && flag2);
     }
 
-    function testBoo2() public returns(bool){
+    function testBoo2() public view returns(bool){
         return flag || flag2;
     }
 
@@ -24,9 +24,13 @@ contract Test{
     int a = 1;
     int b = 2;
     // constant 表示函数不会修改状态变量的值
-    func add() public constant returns(int){
+    // 自Solidity 0.4.17版本开始，constant 修饰符不能再用于函数了，它只能用于状态变量。对于函数来说，类似的行为是用 view 或 pure 关键字来表示。
+    // view 表示函数不会修改状态变量的值
+    // pure 表示函数不会修改状态变量的值 也不会读取状态变量的值
+    function add() public view returns(int){
         if(b > a){
             return b - a;
+        }
         else if(b < a){
             return a - b;
         }else{
@@ -34,3 +38,5 @@ contract Test{
         }
     }
 }
+
+// 直接去remix单元测试、或者run里面运行就行了 之后去已部署的合约里面 之后看解码输出
