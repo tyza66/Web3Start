@@ -17,12 +17,15 @@ pragma solidity 0.8.28;
 
 contract Sharer {
     // 将合约的余额平分给两个地址
+    // msg.value 表示的是在调用 sendHalf 函数时传递给合约的以太币数量
     function sendHalf(address payable addr) public payable returns (uint balance) {
         require(msg.value % 2 == 0, "Even value required");     // 如果这个智能合约附加的余额是奇数的话就会报错
-        uint balanceBeforeTransfer = address(this).balance;
-        addr.transfer(msg.value / 2);
-        // 这里的assert是用来检查合约内部错误的
-        assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
+        uint balanceBeforeTransfer = address(this).balance;     // 获取转账前合约的余额
+        addr.transfer(msg.value / 2); // 将一半的余额转给addr
+        // 这里的assert是用来检查合约内部错误的 this.balance是合约的余额 balanceBeforeTransfer是转账之前的余额 msg.value是转账的金额
+        assert(address(this).balance == balanceBeforeTransfer - msg.value / 2); // 检查转账之后合约的余额是否正确 就是为了检查之前执行的逻辑有没有错误
         return address(this).balance;
     }
+    // 当执行方法的时候币会先添加2到合约的余额中 然后再转账 也就是说一开始address(this).balance就会变成2，而msg.value是本次携带的金额，始终是2 转走msg.value的一半之后address(this).balance剩余1
+    // 第二次执行的时候原本合约余额是1，又携带了4（当前原始余额是5），转走4的一半的时候合约里面原本的1加上这次又剩下的一半2，合约中剩下3 这时判断条件里面原始余额5减去这次携带的一半2得到3 所以不会报错
 }
