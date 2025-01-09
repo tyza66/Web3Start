@@ -20,6 +20,7 @@ abstract contract ERC20Interface{
 }
 
 // 定义一个合约继承ERC20Interface
+// 默认创建者会拥有所有的发行的代币
 contract SimpleCoin is ERC20Interface{
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowed; // 记录一个账户 A 对另一个账户 B 的授权额度
