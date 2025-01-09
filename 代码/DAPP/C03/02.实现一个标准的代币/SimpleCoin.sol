@@ -51,23 +51,25 @@ contract SimpleCoin is ERC20Interface{
     }
 
     // 授权
-    // _spender: 被授权的地址
+    // _spender: 被授权的地址 传入B的地址
     // _value: 授权额度
     function approve(address _spender, uint256 _value) public override returns (bool success){
-        allowed[msg.sender][_spender] = _value;
+        allowed[msg.sender][_spender] = _value;  // 赋予B可以操作A的代币额度
         emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
-    // 查询_owner授权_spender的额度
+    // 查询_owner授权_spender的额度 就是B能操作A的代币额度
     function allowance(address _owner, address _spender) public view override returns (uint256 remaining){
         return allowed[_owner][_spender];
     }
 
     // 从_owner转账到_to
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
+        require(_to != address(0), "Invalid address");
         require(balanceOf[_from] >= _value, "Not enough balance");
-        require(allowed[_from][msg.sender] >= _value, "Not enough allowance");
+        require(allowed[_from][msg.sender] >= _value, "Not enough allowance"); // 检查from的地址中是否允许现在的msg.sender操作from的代币
+        // 就是msg.sender可以操作from的代币必须大于等于_value
         balanceOf[_from] -= _value;
         balanceOf[_to] += _value;
         allowed[_from][msg.sender] -= _value;
