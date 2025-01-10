@@ -129,3 +129,5 @@ $(function () {
     App.init();
   });
 });
+
+// lite-server的每个窗口默认动态同步刷新，但是如果你想要关闭这个功能，可以在bs-config.json文件中设置ghostMode为false
