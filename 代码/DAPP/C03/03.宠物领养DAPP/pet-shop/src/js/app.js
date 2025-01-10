@@ -62,7 +62,8 @@ App = {
     }).then(function (adopters) {
       for (i = 0; i < adopters.length; i++) {
         if (adopters[i] != "0x0000000000000000000000000000000000000000") {
-          $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
+          var all = $('.panel-pet');
+          all.eq(i+1).find('button').text('Success').attr('disabled', true);
         }
       }
     }).catch(function (err) {
@@ -99,7 +100,7 @@ App = {
         return instance.adopt(petId, { from: account }); // account是调用者的地址
       }).then(function (result) {
         console.log(result);
-        return App.markAdopted(); // 更新当前的领养状态
+        return App.markAdopted(); // 更新当前的领养状态 但是交易是需要处理时间的 所以这里不一定能够立即更新
       }).catch(function (err) {
         console.log(err.message);
       });
