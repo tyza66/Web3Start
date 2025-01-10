@@ -61,6 +61,7 @@ App = {
       instance.Adopted({}, function (error, event) {
         if (!error) {
           console.log(event);
+          App.markAdopted();
         }
       });
     });
