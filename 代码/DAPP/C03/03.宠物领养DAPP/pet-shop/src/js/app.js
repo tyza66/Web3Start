@@ -42,15 +42,28 @@ App = {
       var AdoptionArtifact = data;
       App.contracts.Adoption = TruffleContract(AdoptionArtifact); // TruffleContract帮我们创建一个合约实例
       App.contracts.Adoption.setProvider(App.web3Provider); // 之后给合约设置provider
-
+      App.bindLintenEvents();
       return App.markAdopted();
     });
+
 
     return App.bindEvents();
   },
 
   bindEvents: function () {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
+  },
+
+  // 每次修改协议都要重新部署合约truffle migrate
+  bindLintenEvents: function () {
+    // 注册监听交易完成事件
+    App.contracts.Adoption.deployed().then(function (instance) {
+      instance.Adopted({}, function (error, event) {
+        if (!error) {
+          console.log(event);
+        }
+      });
+    });
   },
 
   markAdopted: function () {
@@ -64,7 +77,7 @@ App = {
         if (adopters[i] != "0x0000000000000000000000000000000000000000") {
           var all = $('.panel-pet');
           // eq 函数用于通过索引选择元素时，下标是从 0 开始的 但是我们有个隐藏窗口中的panel-pet给0占了
-          all.eq(i+1).find('button').text('Success').attr('disabled', true);
+          all.eq(i + 1).find('button').text('Success').attr('disabled', true);
         }
       }
     }).catch(function (err) {
