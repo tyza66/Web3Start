@@ -9,8 +9,8 @@ contract TestAdoption {
 
     // 测试领养宠物函数
     function testUserCanAdoptPet() public {
-        uint returnedId = adoption.adopt(8);
-        uint expected = 8;
+        uint returnedId = adoption.adopt(8); // 测试值是8
+        uint expected = 9; // 预期值设为9 这个测试不会成功
         Assert.equal(returnedId, expected, "Adoption of pet ID 8 should be recorded.");
     }
 

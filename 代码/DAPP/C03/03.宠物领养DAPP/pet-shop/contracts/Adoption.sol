@@ -6,7 +6,7 @@ contract Adoption{
     // 领养宠物
     function adopt(uint petId) public returns (uint){
         require(petId >= 0 && petId <= 15);
-        adopters[petId] = msg.sender;
+        adopters[petId] = msg.sender; // 几号的宠物被谁领养了 通过宠物id从数组adopters查询领养者
         return petId;
     }
 
