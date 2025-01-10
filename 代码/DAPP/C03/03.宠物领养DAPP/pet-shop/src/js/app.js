@@ -63,6 +63,7 @@ App = {
       for (i = 0; i < adopters.length; i++) {
         if (adopters[i] != "0x0000000000000000000000000000000000000000") {
           var all = $('.panel-pet');
+          // eq 函数用于通过索引选择元素时，下标是从 0 开始的 但是我们有个隐藏窗口中的panel-pet给0占了
           all.eq(i+1).find('button').text('Success').attr('disabled', true);
         }
       }
@@ -100,7 +101,7 @@ App = {
         return instance.adopt(petId, { from: account }); // account是调用者的地址
       }).then(function (result) {
         console.log(result);
-        return App.markAdopted(); // 更新当前的领养状态 但是交易是需要处理时间的 所以这里不一定能够立即更新
+        return App.markAdopted(); // 更新当前的领养状态 但是交易是需要处理时间的 所以这里不一定能够立即更新 我就不改了 这是异步的问题
       }).catch(function (err) {
         console.log(err.message);
       });
